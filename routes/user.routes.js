@@ -30,4 +30,26 @@ router.post("/store-user", async function (req, res) {
   }
 });
 
+// api to fetch users
+
+// const fetchUsers = async (req, res) => {
+//   try {
+//     const users = await User.find(); // array []
+
+//     return res.json({ message: "users fetched", users });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find(); // array []
+
+    return res.json({ message: "users fetched", users });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;

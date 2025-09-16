@@ -2,28 +2,39 @@
 
 const express = require("express");
 
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 // import mongoose
 
 const mongoose = require("mongoose");
 
+// import user router
+
+const userRouter = require("./routes/user.routes");
+
 // app
 const app = express();
+
+app.use(express.json());
 
 // database connection
 
 mongoose
-  .connect(
-    "mongodb+srv://kadyannehal333_db_user:KDRllz4u1r3YpzXa@cluster0.lcxo8l1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-  )
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Database connected");
-  });
+  })
+  .catch((err) => console.log(err));
 
 // home route
 
-app.get("/hello", (req, res) => {
-  return res.send("<h1>Hello World</h1>");
-});
+app.use("/api", userRouter);
+
+// app.get("/hello", (req, res) => {
+//   return res.send("<h1>Hello World</h1>");
+// });
 
 app.get("/users", (req, res) => {
   //logic

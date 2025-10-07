@@ -6,6 +6,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const cors = require("cors");
+
 // import mongoose
 
 const mongoose = require("mongoose");
@@ -18,6 +20,8 @@ const postRouter = require("./routes/post.routes");
 
 // app
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
@@ -32,13 +36,18 @@ mongoose
 
 // home route
 
-app.use("/api", userRouter);
+app.use("/api", userRouter); 
+// "http://localhost:5001/api/store-user"
 
 app.use("/api/post", postRouter);
 
 // app.get("/hello", (req, res) => {
 //   return res.send("<h1>Hello World</h1>");
 // });
+
+app.get('/', (req, res) => {
+  res.send('Hello World')
+})
 
 app.get("/users", (req, res) => {
   //logic
@@ -68,8 +77,8 @@ app.get("/users", (req, res) => {
   });
 });
 
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
+app.listen(5001, () => {
+  console.log("Server is running on port 5001");
 });
 
 // KDRllz4u1r3YpzXa

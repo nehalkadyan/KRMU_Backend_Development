@@ -23,10 +23,13 @@ const Signup = () => {
 
     // signup function
 
-    const signupUser = async () => {
+    const signupUser = async (e) => {
+      e.preventDefault(); // to prevent default behaviour of form
         try{
             // make api call
-            const response = await axios.post("http://localhost:5001/api/store-user")
+            const response = await axios.post("http://localhost:5001/api/store-user", 
+              {username, email, password} // body
+            )
 
         }catch(err){
             console.log("error while signup ", err)
@@ -37,13 +40,13 @@ const Signup = () => {
     <div>
       <h1>Sign up Page</h1>
 
-      <form className='signup-form'>
+      <form onSubmit={signupUser} className='signup-form'>
 
        <input type="text" placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
        <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
        <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
 
-       <button>Sign up</button>
+       <button type='submit'>Sign up</button>
 
       </form>
     </div>

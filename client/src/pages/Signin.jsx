@@ -7,11 +7,7 @@ import { useNavigate } from 'react-router-dom'
 // to create and maintain state ->. useState hook
 
 
-const Signup = () => {
-
-    // navigate 
-
-    const navigate = useNavigate()
+const Signin = () => {
 
     // username
     const [username, setUsername] = useState("")
@@ -37,10 +33,6 @@ const Signup = () => {
               {username, email, password} // body
             )
 
-            if(response.data.user){
-              navigate("/signin")
-            }
-
         }catch(err){
             console.log("error while signup ", err)
         }
@@ -48,19 +40,18 @@ const Signup = () => {
 
   return (
     <div>
-      <h1>Sign up Page</h1>
+      <h1>Sign In Page</h1>
 
       <form onSubmit={signupUser} className='signup-form'>
 
-       <input type="text" placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
        <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
        <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
 
-       <button type='submit'>Sign up</button>
+       <button type='submit'>Sign In</button>
 
       </form>
     </div>
   )
 }
 
-export default Signup
+export default Signin

@@ -1,6 +1,9 @@
 // require express
 
 const express = require("express");
+// require bcrypt
+
+const bcrypt = require("bcryptjs")
 
 // import User model
 
@@ -14,12 +17,17 @@ router.post("/store-user", async function (req, res) {
   try {
     // store user
     const { username, email, password } = req.body;
+
+    // hash (encrypt) the password
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     // create new user
 
     const newUser = new User({
       username,
       email,
-      password,
+      password : hashedPassword,
     });
     // save newUser
     await newUser.save();

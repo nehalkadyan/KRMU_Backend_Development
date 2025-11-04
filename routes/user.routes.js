@@ -5,6 +5,7 @@ const express = require("express");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { signin } = require("../controllers/user.controller");
 
 // import User model
 
@@ -21,14 +22,14 @@ router.post("/store-user", async function (req, res) {
 
     // hash (encrypt) the password
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // create new user
 
     const newUser = new User({
       username,
       email,
-      password : hashedPassword,
+      password: hashedPassword,
     });
     // save newUser
     await newUser.save();
@@ -41,45 +42,7 @@ router.post("/store-user", async function (req, res) {
 
 // api to singin
 
-
-router.post("/signin", async (req, res) => {
-  try{
-     const {email, password} = req.body;
-      //.  abc@gmail.com
-      // password = 123
-
-     // check whther user exists in the db
-
-     const existingUser = await User.findOne({email});
-
-     if(!existingUser){
-        return res.status(404).json({message : "User not found with this email"})
-     }
-
-     // compare password
-
-     const isValidPassword = await bcrypt.compare(password, existingUser.password)
-
-     if(!isValidPassword){
-      return res.status(401).json({message : "Password did not match"})
-    }
-
-    // create token
-
-    const tokenData = {
-      id: existingUser._id
-    }
-
-    const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {expiresIn: "1h"})
-
-    return res.json({message : "user signed in successfully", user : existingUser, token})
-
-
-  }catch(err){
-    console.log("error", err)
-  }
-})
-
+router.post("/signin", signin);
 
 // api to fetch users
 
@@ -140,7 +103,6 @@ router.delete("/delete-account/:userId", async (req, res) => {
     const { userId } = req.params;
 
     // step 2
-
     const deletedUser = await User.findByIdAndDelete(userId);
 
     return res.json({
@@ -149,6 +111,32 @@ router.delete("/delete-account/:userId", async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+  }
+});
+
+// api route to search for a user
+
+router.get("/search-user", async (req, res) => {
+  try {
+    // req.query
+    // www.amazon.com?product_name=nike
+    const { searchInput } = req.query;
+    //.    kr
+
+    // const users = await User.find({username : searchInput});
+
+    const users = await User.find({username : {$regex: searchInput, $options: "i"}});
+
+    // filtering logic
+
+    // const filteredUsers = users.filter((user, index) =>
+    //   user.username.toLowerCase().includes(searchInput.toLowerCase())
+    // );
+
+    return res.status(200).json({ message: "Users fetched :", users });
+  } catch (err) {
+    console.log("error while searching a user", err.message);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

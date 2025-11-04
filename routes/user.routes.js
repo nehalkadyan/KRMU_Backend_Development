@@ -124,20 +124,33 @@ router.get("/search-user", async (req, res) => {
     //.    kr
 
     // const users = await User.find({username : searchInput});
-
     const users = await User.find({username : {$regex: searchInput, $options: "i"}});
-
+    // regex -> regular expressions
     // filtering logic
 
     // const filteredUsers = users.filter((user, index) =>
     //   user.username.toLowerCase().includes(searchInput.toLowerCase())
     // );
-
     return res.status(200).json({ message: "Users fetched :", users });
   } catch (err) {
     console.log("error while searching a user", err.message);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+// sort
+
+router.get("/sort", async(req, res) => {
+  try{
+    // sort users in ascending order by their usernames
+
+    const users = await User.find().sort({username : 1})
+
+    return res.status(200).json({message : "Users sorted successfully in ascending order", users})
+
+  }catch(err){
+    console.log("err", err.message)
+  }
+})
 
 module.exports = router;

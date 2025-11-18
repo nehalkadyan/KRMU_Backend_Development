@@ -145,6 +145,8 @@ router.get("/sort", async(req, res) => {
     // sort users in ascending order by their usernames
 
     const users = await User.find().sort({username : 1})
+    // ascending -> 1
+    //descending -> -1
 
     return res.status(200).json({message : "Users sorted successfully in ascending order", users})
 

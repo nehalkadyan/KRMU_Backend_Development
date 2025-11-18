@@ -6,14 +6,14 @@ const insertPosts = async (req, res) => {
   try {
     const insertedPosts = await Post.insertMany([
       {
-        title: "Learn JS",
-        description: "learning js",
+        title: "Docker",
+        description: "Learning js",
         category: "education",
       },
 
       {
-        title: "Learn Node",
-        description: "learning node",
+        title: "Redis",
+        description: "learning Redis",
         category: "education",
       },
     ]); // takes an array

@@ -8,6 +8,8 @@ dotenv.config();
 
 const cors = require("cors");
 
+const cookieParser = require("cookie-parser")
+
 // import mongoose
 
 const mongoose = require("mongoose");
@@ -21,7 +23,15 @@ const postRouter = require("./routes/post.routes");
 // app
 const app = express();
 
-app.use(cors()); //. 
+app.use(cookieParser())
+
+
+// client -> port
+// backend -> port 
+app.use(cors({
+  origin : "http://localhost:5173",
+  credentials : true
+})); //. 
 
 app.use(express.json());
 

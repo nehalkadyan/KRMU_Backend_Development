@@ -7,12 +7,6 @@ import { useNavigate } from 'react-router-dom'
 // to create and maintain state ->. useState hook
 
 const Signin = () => {
-
-    // username
-    const [username, setUsername] = useState("")
-
-    console.log("username : ",username)
-
     // email
     const [email, setEmail] = useState("");
 
@@ -24,16 +18,20 @@ const Signin = () => {
 
     // signup function
 
-    const signupUser = async (e) => {
+    const signInUser = async (e) => {
       e.preventDefault(); // to prevent default behaviour of form
         try{
             // make api call
-            const response = await axios.post("http://localhost:5001/api/store-user", 
-              {username, email, password} // body
+            const response = await axios.post("http://localhost:5001/api/signin", 
+              // request body
+              {email, password},
+              {withCredentials : true} 
             )
 
+            console.log("response :", response.data)
+
         }catch(err){
-            console.log("error while signup ", err)
+            console.log("error while Signing In ", err)
         }
     }
 
@@ -41,7 +39,7 @@ const Signin = () => {
     <div>
       <h1>Sign In Page</h1>
 
-      <form onSubmit={signupUser} className='signup-form'>
+      <form onSubmit={signInUser} className='signup-form'>
 
        <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
        <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>

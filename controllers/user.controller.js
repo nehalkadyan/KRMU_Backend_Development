@@ -32,6 +32,11 @@ const signin = async (req, res) => {
     }
 
     const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {expiresIn: "1h"})
+
+    // storing the token
+
+    res.cookie("access_token", token, {httpOnly : true});
+
     return res.json({message : "user signed in successfully", user : existingUser, token})
 
   }catch(err){

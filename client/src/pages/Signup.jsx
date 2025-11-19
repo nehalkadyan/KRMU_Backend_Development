@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 
 // to create and maintain state ->. useState hook
 
-
 const Signup = () => {
 
     // navigate 
